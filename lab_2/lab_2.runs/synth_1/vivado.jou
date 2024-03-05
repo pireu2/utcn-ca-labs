@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# Vivado v2023.2.2 (64-bit)
+# SW Build 4126759 on Thu Feb  8 23:53:51 MST 2024
+# IP Build 4126054 on Fri Feb  9 11:39:09 MST 2024
+# SharedData Build 4115275 on Tue Jan 30 00:40:57 MST 2024
+# Start of session at: Tue Mar  5 13:28:19 2024
+# Process ID: 16152
+# Current directory: C:/Users/sebi/OneDrive - Technical University of Cluj-Napoca/Documents/Facultate/Anul 2/Semestrul 2/CA - Computer Architecture/utcn-ca-labs/lab_2/lab_2.runs/synth_1
+# Command line: vivado.exe -log alu_ssd.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source alu_ssd.tcl
+# Log file: C:/Users/sebi/OneDrive - Technical University of Cluj-Napoca/Documents/Facultate/Anul 2/Semestrul 2/CA - Computer Architecture/utcn-ca-labs/lab_2/lab_2.runs/synth_1/alu_ssd.vds
+# Journal file: C:/Users/sebi/OneDrive - Technical University of Cluj-Napoca/Documents/Facultate/Anul 2/Semestrul 2/CA - Computer Architecture/utcn-ca-labs/lab_2/lab_2.runs/synth_1\vivado.jou
+# Running On: zenbook-sebi, OS: Windows, CPU Frequency: 2496 MHz, CPU Physical cores: 12, Host memory: 16785 MB
+#-----------------------------------------------------------
+source alu_ssd.tcl -notrace
