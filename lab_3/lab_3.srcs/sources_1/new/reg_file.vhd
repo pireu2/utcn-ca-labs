@@ -10,7 +10,6 @@ entity reg_file is
 port (
     clk : in std_logic;
     ra1 : in std_logic_vector (2 downto 0);
-    ra2 : in std_logic_vector (2 downto 0);
     wa : in std_logic_vector (2 downto 0);
     wd : in std_logic_vector (7 downto 0);
     wen : in std_logic;
