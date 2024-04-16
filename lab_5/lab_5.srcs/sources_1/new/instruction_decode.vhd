@@ -51,7 +51,7 @@ begin
 end process;
 
 --write addr mux
-process(reg_dest)
+process(reg_dst)
 begin
     if reg_dst = '0' then
         w_addr <= rd;

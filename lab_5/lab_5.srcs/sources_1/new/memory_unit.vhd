@@ -11,7 +11,7 @@ Port (
   mem_write: in std_logic;
   alu_res: inout std_logic_vector(15 downto 0);
   rd2: in std_logic_vector(15 downto 0);
-  mem_data: out std_logic_vector(15 downto 0);
+  mem_data: out std_logic_vector(15 downto 0)
 );
 end memory_unit;
 

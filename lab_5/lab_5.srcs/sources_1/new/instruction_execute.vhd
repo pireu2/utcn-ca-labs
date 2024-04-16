@@ -24,7 +24,7 @@ architecture Behavioral of instruction_execute is
 
 signal op_2: std_logic_vector(15 downto 0);
 signal control: std_logic_vector(3 downto 0);
-signal temp: std_logic_vector(16 downto 0);
+signal temp: std_logic_vector(15 downto 0);
 
 begin
 
@@ -74,16 +74,16 @@ begin
       when "0010" =>
         --shift left logical
         if sa = '1' then
-          temp <= rd1 & '0';
+          temp <= rd1(14 downto 0) & "0";
         else
-          temp <= "0" & rd1;
+          temp <= rd1;
         end if;
       when "0011" =>
         -- shift right logical
         if sa = '1' then
-          temp <= "00" & rd1(15 downto 1); 
+          temp <= "0" & rd1(15 downto 1); 
         else
-          temp <= "0" & rd1;
+          temp <= rd1;
         end if;
       when "0100" =>
         --and
@@ -97,7 +97,7 @@ begin
       when "0111" =>
         --noop
         temp <= (others => '0');
-      when "1001" =>
+      when "1110" =>
         --branch on equal
         if rd1 = op_2 then
           zero <= '1';
