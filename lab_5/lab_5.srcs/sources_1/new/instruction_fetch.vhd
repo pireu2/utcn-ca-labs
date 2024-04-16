@@ -52,21 +52,21 @@ signal out1: std_logic_vector(15 downto 0);
 
 signal rom_data: rom := (
     0=> B"000_001_001_001_0_110", --xor $1,$1,$1 $1-contorul ,care ne spune la ce numar suntem
-    1=> B"100_000_001_0000010",--- addi $1,$0,2  initializam contorul cu 2
+    1=> B"001_000_001_0000010",--- addi $1,$0,2  initializam contorul cu 2
     2=> B"000_100_100_100_0_110", --xor $4,$4,$4  -valoarea maxima pana la care merge
-    3=> B"100_000_100_0001010", --addi $4,$0,10  $4- initializam valoarea maxima=10
+    3=> B"001_000_100_0001010", --addi $4,$0,10  $4- initializam valoarea maxima=10
     4=> B"000_011_011_011_0_110", --xor $3,$3,$3 -suma
     5=> B"000_000_000_011_0_000", --add $3,$0,$0  -initalizam suma =0 
     6=> B"000_101_101_101_0_110", --xor $5,$5,$5  numarul pe care il adaugam la suma
-    7=> B"100_000_101_0000000", --addi $5,$0,0 - initializam numarul cu 0 
-    8=> B"010_001_100_0000100", --beq $1,$4,4 - cat timp contorul<valoarea maxima
-    9=> B"100_101_101_0000010",--addi $5,$5,2  -trecem la urmatorul numar par
+    7=> B"001_000_101_0000000", --addi $5,$0,0 - initializam numarul cu 0 
+    8=> B"110_001_100_0000100", --beq $1,$4,4 - cat timp contorul<valoarea maxima
+    9=> B"001_101_101_0000010",--addi $5,$5,2  -trecem la urmatorul numar par
     10=> B"000_011_101_011_0_000", --add $3,$3,5    adunam la suma numarul par
-    11=> B"100_001_001_0000010",    --addi $1,$1,2  -crestem contorul cu 2
-    12=> B"001_0000000001000",             --j,8   sarim inapoi la beq 
-    13=> B"111_011_001_0000000", --sw $1,offset($3)  
-    14=> B"011_011_001_0000000", --lw $1,offset($3)   
-    others =>B"000_001_001_001_0_110");         
+    11=> B"001_001_001_0000010",    --addi $1,$1,2  -crestem contorul cu 2
+    12=> B"111_0000000001000",             --j,8   sarim inapoi la beq 
+    13=> B"100_011_001_0000000", --sw $1,offset($3)  
+    14=> B"101_011_001_0000000", --lw $1,offset($3)   
+    others =>B"000_001_001_001_0_111");  --noop       
 
 begin
 
