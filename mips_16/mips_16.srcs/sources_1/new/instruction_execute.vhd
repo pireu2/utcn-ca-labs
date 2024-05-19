@@ -121,17 +121,11 @@ begin
           zero <= '0';
         end if;
         temp <= (others => '0');
-      when "1111" =>
-        --jump
-        zero <= '1';
-        temp <= (others => '0');
       when others =>
         zero <= '0';
         temp <= (others => '0');
     end case;
-    
+    alu_res <= temp(15 downto 0);
   end process;
-
-alu_res <= temp(15 downto 0);
-
+  
 end Behavioral;
