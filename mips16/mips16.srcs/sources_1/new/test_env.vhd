@@ -58,57 +58,61 @@ signal mem_data: std_logic_vector(15 downto 0) := (others => '0');
 --ssd signals
 signal digits : std_logic_vector(31 downto 0) := (others => '0');
 
+--clk
+signal clk_aux: std_logic := '0';
+
 begin
 
 
--- mpg1: entity work.mpg port map(
---   clk => clk,
---   input => btn(0),
---   enable => mpg_btn(0)
--- );
+mpg1: entity work.mpg port map(
+  clk => clk,
+  input => btn(0),
+  enable => mpg_btn(0)
+);
 
--- mpg2: entity work.mpg port map(
---   clk => clk,
---   input => btn(1),
---   enable => mpg_btn(1)
--- );
+mpg2: entity work.mpg port map(
+  clk => clk,
+  input => btn(1),
+  enable => mpg_btn(1)
+);
 
--- mpg3: entity work.mpg port map(
---   clk => clk,
---   input => btn(2),
---   enable => mpg_btn(2)
--- );
+mpg3: entity work.mpg port map(
+  clk => clk,
+  input => btn(2),
+  enable => mpg_btn(2)
+);
 
--- mpg4: entity work.mpg port map(
---   clk => clk,
---   input => btn(3),
---   enable => mpg_btn(3)
--- );
+mpg4: entity work.mpg port map(
+  clk => clk,
+  input => btn(3),
+  enable => mpg_btn(3)
+);
 
--- mpg5: entity work.mpg port map(
---   clk => clk,
---   input => btn(4),
---   enable => mpg_btn(4)
--- );
+mpg5: entity work.mpg port map(
+  clk => clk,
+  input => btn(4),
+  enable => mpg_btn(4)
+);
 
--- enable <= sw(0);
--- pc_reset <= sw(1);
+enable <= sw(0);
+pc_reset <= sw(1);
+clk_aux <= mpg_btn(0);
 pc_src <= zero and branch;
 
--- process(sw, instruction, pc_out, rd1, rd2, ext_imm, alu_res, mem_data, wd)
--- begin
---   case sw(7 downto 5) is
---     when "000" => digits <= x"0000" & instruction;
---     when "001" => digits <= x"0000" & pc_out;
---     when "010" => digits <= x"0000" & rd1;
---     when "011" => digits <= x"0000" & rd2;
---     when "100" => digits <= x"0000" & ext_imm;
---     when "101" => digits <= x"0000" & alu_res;
---     when "110" => digits <= x"0000" & mem_data;
---     when "111" => digits <= x"0000" & wd;
---     when others => digits <= x"00000000"; 
---   end case;
--- end process;
+process(sw, instruction, pc_out, rd1, rd2, ext_imm, alu_res, mem_data, wd)
+begin
+  case sw(7 downto 5) is
+    when "000" => digits <= x"0000" & instruction;
+    when "001" => digits <= x"0000" & pc_out;
+    when "010" => digits <= x"0000" & rd1;
+    when "011" => digits <= x"0000" & rd2;
+    when "100" => digits <= x"0000" & ext_imm;
+    when "101" => digits <= x"0000" & alu_res;
+    when "110" => digits <= x"0000" & mem_data;
+    when "111" => digits <= x"0000" & wd;
+    when others => digits <= x"00000000"; 
+  end case;
+end process;
 
 process(mem_to_reg, mem_data, wd, alu_res)
 begin
@@ -120,17 +124,17 @@ begin
 end process;
 
 
--- ssd: entity work.ssd port map(
---   clk => clk,
---   digits => digits,
---   an => an,
---   cat => cat
--- );
+ssd: entity work.ssd port map(
+  clk => clk,
+  digits => digits,
+  an => an,
+  cat => cat
+);
 
 jmp_addr <= "000" & instruction(12 downto 0);
 
 instruction_fetch: entity work.instruction_fetch port map(
-  clk => clk,
+  clk => clk_aux,
   enable => enable,
   pc_reset => pc_reset,
   pc_out => pc_out,
@@ -143,7 +147,7 @@ instruction_fetch: entity work.instruction_fetch port map(
 );
 
 instruction_decode: entity work.instruction_decode port map(
-  clk => clk,
+  clk => clk_aux,
   instruction => instruction,
   reg_dst => reg_dst,
   ext_op => ext_op,
@@ -170,7 +174,7 @@ main_control: entity work.main_control port map(
 );
 
 memory_unit: entity work.memory_unit port map(
-  clk => clk,
+  clk => clk_aux,
   en => enable,
   mem_write => mem_write,
   alu_res => alu_res,

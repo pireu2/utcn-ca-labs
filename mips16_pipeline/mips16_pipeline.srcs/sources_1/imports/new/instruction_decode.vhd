@@ -29,36 +29,33 @@ signal rs : std_logic_vector(2 downto 0) := instruction(12 downto 10);
 signal rt : std_logic_vector(2 downto 0) := instruction(9 downto 7);
 signal rd : std_logic_vector(2 downto 0) := instruction(6 downto 4);
 signal imm : std_logic_vector(6 downto 0) := instruction(6 downto 0);
-signal w_addr : std_logic_vector(2 downto 0) := "000";
+signal w_addr : std_logic_vector(2 downto 0);
 
 begin
+
+op <= instruction(15 downto 13);
+rs <= instruction(12 downto 10);
+rt <= instruction(9 downto 7);
+rd <= instruction(6 downto 4);
+imm <= instruction(6 downto 0);
+w_addr <= instruction(9 downto 7) when reg_dst = '0' else instruction(6 downto 4);
+
 
 func <= instruction(2 downto 0);
 sa <= instruction(3);
 
 --sign extension
-process(ext_op)
-begin
-    if ext_op = '0' then
-        ext_imm <= x"00" & "0" & imm;
-    else
-        if imm(6) = '1' then
-            ext_imm <= x"FF" & "1" & imm;
+process(instruction, ext_op)
+    begin
+        if ext_op = '1' then
+            ext_imm(15 downto 7) <= (others => instruction(6));
+            ext_imm(6 downto 0) <= instruction(6 downto 0);
         else
-            ext_imm <= x"00" & "0" & imm;
+            ext_imm(15 downto 7) <= (others => '0');
+            ext_imm(6 downto 0) <= instruction(6 downto 0);
         end if;
-    end if;
-end process;
+    end process;
 
---write addr mux
-process(reg_dst)
-begin
-    if reg_dst = '0' then
-        w_addr <= rd;
-    else
-        w_addr <= rt;  
-    end if;
-end process;
 
 reg_file: entity work.reg_file
     port map(

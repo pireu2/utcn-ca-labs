@@ -29,7 +29,7 @@ begin
 
     process(clk)
     begin
-        if rising_edge(clk) then
+        if clk'event and clk='1' then
             if wen = '1' then
                 reg_file(conv_integer(wa)) <= wd;
             end if;

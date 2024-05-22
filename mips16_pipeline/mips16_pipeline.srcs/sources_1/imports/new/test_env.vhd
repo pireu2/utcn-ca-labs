@@ -25,6 +25,7 @@ signal enable : std_logic := '0';
 signal pc_reset : std_logic := '0';
 signal instruction: std_logic_vector(15 downto 0)  := (others => '0');
 signal pc_out: std_logic_vector(15 downto 0) := (others => '0');
+signal pc_inc : std_logic_vector(15 downto 0) := (others => '0');
 signal jmp_addr: std_logic_vector(15 downto 0) := (others => '0');
 signal pc_src: std_logic;
 
@@ -56,6 +57,9 @@ signal mem_data: std_logic_vector(15 downto 0) := (others => '0');
 
 --ssd signals
 signal digits : std_logic_vector(31 downto 0) := (others => '0');
+
+--clk
+signal clk_aux: std_logic := '0';
 
 begin
 
@@ -92,6 +96,7 @@ mpg5: entity work.mpg port map(
 
 enable <= sw(0);
 pc_reset <= sw(1);
+clk_aux <= mpg_btn(0);
 pc_src <= zero and branch;
 
 process(sw, instruction, pc_out, rd1, rd2, ext_imm, alu_res, mem_data, wd)
@@ -118,6 +123,7 @@ begin
   end if;
 end process;
 
+
 ssd: entity work.ssd port map(
   clk => clk,
   digits => digits,
@@ -125,11 +131,14 @@ ssd: entity work.ssd port map(
   cat => cat
 );
 
+jmp_addr <= "000" & instruction(12 downto 0);
+
 instruction_fetch: entity work.instruction_fetch port map(
-  clk => mpg_btn(0),
+  clk => clk_aux,
   enable => enable,
   pc_reset => pc_reset,
   pc_out => pc_out,
+  pc_inc => pc_inc,
   instruction => instruction,
   jmp_addr => jmp_addr,
   jmp => jump,
@@ -138,7 +147,7 @@ instruction_fetch: entity work.instruction_fetch port map(
 );
 
 instruction_decode: entity work.instruction_decode port map(
-  clk => clk,
+  clk => clk_aux,
   instruction => instruction,
   reg_dst => reg_dst,
   ext_op => ext_op,
@@ -165,7 +174,7 @@ main_control: entity work.main_control port map(
 );
 
 memory_unit: entity work.memory_unit port map(
-  clk => clk,
+  clk => clk_aux,
   en => enable,
   mem_write => mem_write,
   alu_res => alu_res,
@@ -181,7 +190,7 @@ instruction_execute: entity work.instruction_execute port map(
   sa => sa,
   func => func,
   alu_op => alu_op,
-  pc => pc_out,
+  pc => pc_inc,
   alu_res => alu_res,
   branch_addr => branch_addr,
   zero => zero
