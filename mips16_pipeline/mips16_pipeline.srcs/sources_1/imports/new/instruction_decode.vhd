@@ -17,6 +17,9 @@ Port (
         rd2 : out std_logic_vector(15 downto 0);
         ext_imm : out std_logic_vector(15 downto 0);
         func : out std_logic_vector(2 downto 0);
+        w_addr_in: in std_logic_vector(2 downto 0);
+        w_addr_out_1: out std_logic_vector(2 downto 0);
+        w_addr_out_2: out std_logic_vector(2 downto 0);
         sa : out std_logic
 );
 end instruction_decode;
@@ -38,7 +41,9 @@ rs <= instruction(12 downto 10);
 rt <= instruction(9 downto 7);
 rd <= instruction(6 downto 4);
 imm <= instruction(6 downto 0);
-w_addr <= instruction(9 downto 7) when reg_dst = '0' else instruction(6 downto 4);
+w_addr_out_1 <= instruction(9 downto 7);
+w_addr_out_2 <= instruction(6 downto 4);
+w_addr <= w_addr_in;
 
 
 func <= instruction(2 downto 0);

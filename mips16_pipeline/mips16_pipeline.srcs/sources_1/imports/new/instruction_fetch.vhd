@@ -23,7 +23,7 @@ end instruction_fetch;
 
 architecture Behavioral of instruction_fetch is
 
-type rom is array(0 to 15) of std_logic_vector(15 downto 0);
+type rom is array(0 to 31) of std_logic_vector(15 downto 0);
 signal pc: std_logic_vector(15 downto 0) := (others =>'0');
 signal addr1: std_logic_vector(15 downto 0):= (others =>'0');
 signal out1: std_logic_vector(15 downto 0):= (others =>'0');
@@ -32,12 +32,21 @@ signal out1: std_logic_vector(15 downto 0):= (others =>'0');
 signal rom_data: rom := (
     B"001_000_001_0000010", -- addi $1, $0, 2 (initialize $1 to 2)
     B"001_000_100_0001010", -- addi $4, $0, 10 (initialize $4 to 10)
+    B"011_000_000_0000000", -- noop
+    B"011_000_000_0000000", -- noop
+    B"011_000_000_0000000", -- noop
     B"110_001_100_0000100", -- beq $1, $4, 6 (if $1 == $4, jump to instruction 9)
     B"001_101_101_0000010", -- addi $5, $5, 2 (increment $5 by 2)
+    B"011_000_000_0000000", -- noop
+    B"011_000_000_0000000", -- noop
+    B"011_000_000_0000000", -- noop
     B"000_011_101_011_0_000", -- add $3, $3, $5 (add $5 to $3)
     B"001_001_001_0000010", -- addi $1, $1, 2 (increment $1 by 2)
     B"111_0000000000010", -- j 2 (jump back to instruction 2)
     B"100_011_001_0000000", -- sw $1, 0($3) (store $1 at memory address $3)
+    B"011_000_000_0000000", -- noop
+    B"011_000_000_0000000", -- noop
+    B"011_000_000_0000000", -- noop
     B"101_011_001_0000000", -- lw $1, 0($3) (load $1 from memory address $3)
     others => B"000_001_001_001_0_111" -- noop (default operation)
 );

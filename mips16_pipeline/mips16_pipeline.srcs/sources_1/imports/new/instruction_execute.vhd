@@ -16,6 +16,10 @@ Port (
   pc: in std_logic_vector(15 downto 0);
   alu_res: out std_logic_vector(15 downto 0);
   branch_addr: out std_logic_vector(15 downto 0);
+  w_addr_1: in std_logic_vector(2 downto 0);
+  w_addr_2: in std_logic_vector(2 downto 0);
+  w_addr_out: out std_logic_vector(2 downto 0);
+  reg_dst: in std_logic;
   zero: out std_logic
 );
 end instruction_execute;
@@ -26,7 +30,11 @@ signal op_2: std_logic_vector(15 downto 0);
 signal control: std_logic_vector(3 downto 0);
 signal temp: std_logic_vector(15 downto 0);
 
+
+
 begin
+
+  w_addr_out <= w_addr_1 when reg_dst = '0' else w_addr_2;
 
   -- second operand mux
   process(alu_src, rd2, ext_imm)
@@ -94,9 +102,6 @@ begin
       when "0110" =>
         --xor
         temp <= rd1 xor op_2;
-      when "0111" =>
-        --noop
-        temp <= (others => '0');
       when "1110" =>
         --branch on equal
         if rd1 = op_2 then
@@ -114,12 +119,7 @@ begin
         end if;
         temp <= (others => '0');
       when "1011" =>
-        --branch on less than zero
-        if rd1(rd1'left) = '1'  then
-          zero <= '1';
-        else
-          zero <= '0';
-        end if;
+        --noop
         temp <= (others => '0');
       when "1111" =>
         --jump
